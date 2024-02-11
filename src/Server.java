@@ -22,6 +22,7 @@ public class Server {
 
 					final Request request = new Request(client, factory);
 					final OutputStream response = request.handleIncommingRequest(client, router);
+
 					response.flush();
 
 					client.close();
