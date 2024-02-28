@@ -4,6 +4,9 @@ import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Map;
+import java.util.Set;
+import java.util.Map.Entry;
 
 import annotations.Column;
 import annotations.Relation;
@@ -134,5 +137,18 @@ public class Serializable {
 				return true;
 		}
 		return false;
+	}
+
+	public String serialize(Map<String, String> map) {
+		final StringBuilder sb = new StringBuilder("{");
+		final Set<Entry<String, String>> entrySet = map.entrySet();
+
+		for (Entry<String, String> entry : entrySet) {
+			sb.append('"' + entry.getKey() + '"' + ": " + '"' + entry.getValue() + '"');
+		}
+
+		sb.append("}");
+
+		return sb.toString();
 	}
 };

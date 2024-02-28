@@ -8,6 +8,7 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.util.HashMap;
 
+import entities.Response;
 import routes.Router;
 
 public class Request {
@@ -16,17 +17,23 @@ public class Request {
 	private String resourceId;
 	private String sub_resource;
 	private String action;
-	private HashMap<String, ?> query;
+	private HashMap<String, Object> query;
 	private InputStream inputStream;
 	private Socket client;
 	public Factory factory;
 	public HashMap<String, ?> requestBody;
+	public Response response;
 
 	public Request(Socket client, Factory factory) throws IOException {
 		this.client = client;
 		this.inputStream = client.getInputStream();
 		this.factory = factory;
 		this.query = new HashMap<>();
+		this.response = new Response(client);
+	}
+
+	public Response getResponse() {
+		return this.response;
 	}
 
 	public HashMap<String, ?> getRequestBody() {
@@ -41,7 +48,7 @@ public class Request {
 		return this.action;
 	}
 
-	public HashMap<String, ?> getQuery() {
+	public HashMap<String, Object> getQuery() {
 		return this.query;
 	}
 
@@ -125,9 +132,9 @@ public class Request {
 		return stringBuilder;
 	}
 
-	private HashMap<String, ?> buildQuery(String queryString) {
+	private HashMap<String, Object> buildQuery(String queryString) {
 		final String[] queryStrings = queryString.split("&");
-		final HashMap<String, String> query = new HashMap<String, String>();
+		final HashMap<String, Object> query = new HashMap<String, Object>();
 
 		for (int i = 0; i < queryStrings.length; i++) {
 			final String[] queryParam = queryStrings[i].split("=");

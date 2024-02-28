@@ -8,6 +8,8 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 import entities.Response;
+import schemas.Schema;
+import schemas.SchemaParser;
 import services.Request;
 import annotations.Resource;
 import annotations.Route;
@@ -29,6 +31,7 @@ public class Router {
 	@Resource(path = catch_all)
 	OutputStream catchAll(Request request, String basePath) throws IOException {
 		Response response = new Response(request.getClient());
+		System.out.println("catchAll route");
 		return response.resourceNotFound();
 	}
 
@@ -56,7 +59,7 @@ public class Router {
 		}
 
 		final Response response = new Response(request.getClient());
-		return response.resourceNotFound();
+		return response.noContent();
 	}
 
 	private OutputStream resolveAction(Request request, Class<?> resource, String basePath)
@@ -82,6 +85,16 @@ public class Router {
 			for (Method method : matching_methods) {
 				boolean method_has_requested_action = Router.methodHasRequestedAction(method, request);
 				if (method_has_requested_action) {
+					final Route annotation = method.getAnnotation(Route.class);
+					if (annotation.schema() != null)
+						;
+					final Class<?> schemaClass = annotation.schema();
+					SchemaParser schemaParser = new SchemaParser();
+					boolean result = schemaParser.parseSchema((Class<? extends Schema>) schemaClass, request);
+					if (!result) {
+						return request.getResponse().badSchema();
+					}
+
 					return (OutputStream) method.invoke(object, request);
 
 				}

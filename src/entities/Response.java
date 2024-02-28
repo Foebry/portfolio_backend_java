@@ -3,6 +3,8 @@ package entities;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.util.HashMap;
+import java.util.Map;
 
 import annotations.Column;
 import annotations.Serialize;
@@ -22,6 +24,7 @@ public class Response extends Serializable {
     protected String message;
 
     private String responseData;
+    private Map<String, String> schemaError = new HashMap<>();
     private Socket client;
 
     public Response(Socket client) {
@@ -34,6 +37,10 @@ public class Response extends Serializable {
 
     public void setData(String responseData) {
         this.responseData = responseData;
+    }
+
+    public Map<String, String> getSchemaError() {
+        return this.schemaError;
     }
 
     public OutputStream respond(Boolean serialize) throws IOException {
@@ -53,6 +60,20 @@ public class Response extends Serializable {
         this.status = "OK";
         this.responseData = responseData;
         return this.respond(false);
+    }
+
+    public OutputStream badSchema() throws IOException {
+        this.code = 400;
+        this.status = "Bad Request";
+        this.responseData = this.serialize(this.schemaError);
+        return this.respond(false);
+    }
+
+    public OutputStream badRequest(String responseData) throws IOException {
+        this.code = 400;
+        this.status = "Bad Request";
+        this.message = responseData;
+        return this.respond(true);
     }
 
     public OutputStream notFound() throws IOException {
@@ -96,5 +117,6 @@ public class Response extends Serializable {
         this.status = "Internal Server Error";
         this.message = "Something went wrong...";
         return this.respond(true);
+
     }
 }

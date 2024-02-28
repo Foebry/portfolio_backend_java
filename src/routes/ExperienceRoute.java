@@ -10,6 +10,7 @@ import controllers.HomeController;
 import entities.Experience;
 import entities.Paginated;
 import entities.Serializable;
+import schemas.experiences.ListSchema;
 import services.Request;
 import annotations.Route;
 
@@ -27,7 +28,7 @@ public class ExperienceRoute extends BaseRoute {
 		return this.routeName;
 	}
 
-	@Route(endpoint = "/", method = "GET", name = "listExperiences")
+	@Route(endpoint = "/", method = "GET", name = "listExperiences", schema = ListSchema.class)
 	public OutputStream get(Request request) throws IOException, IllegalArgumentException, IllegalAccessException {
 
 		HashMap<String, ?> query = request.getQuery();
