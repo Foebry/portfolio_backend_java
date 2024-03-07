@@ -39,8 +39,8 @@ public class HomeController {
 	private void setQuery(HashMap<String, ?> query) {
 		this.companyName = query.containsKey(companyName_key) ? (String) query.get(companyName_key) : "";
 		this.experienceId = query.containsKey(id_key) ? (String) query.get(id_key) : "";
-		this.page = query.containsKey(page_key) ? Integer.parseInt((String) query.get(page_key)) : 1;
-		this.pageSize = query.containsKey(pageSize_key) ? Integer.parseInt((String) query.get(pageSize_key)) : 20;
+		this.page = (Integer) query.get(page_key);
+		this.pageSize = (Integer) query.get(pageSize_key);
 	}
 
 	public Paginated<Serializable> getExperiences(HashMap<String, ?> query) {

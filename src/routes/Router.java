@@ -86,13 +86,13 @@ public class Router {
 				boolean method_has_requested_action = Router.methodHasRequestedAction(method, request);
 				if (method_has_requested_action) {
 					final Route annotation = method.getAnnotation(Route.class);
-					if (annotation.schema() != null)
-						;
-					final Class<?> schemaClass = annotation.schema();
-					SchemaParser schemaParser = new SchemaParser();
-					boolean result = schemaParser.parseSchema((Class<? extends Schema>) schemaClass, request);
-					if (!result) {
-						return request.getResponse().badSchema();
+					if (annotation.schema() != null) {
+						final Class<?> schemaClass = annotation.schema();
+						SchemaParser schemaParser = new SchemaParser();
+						boolean result = schemaParser.parseSchema((Class<? extends Schema>) schemaClass, request);
+						if (!result) {
+							return request.getResponse().badSchema();
+						}
 					}
 
 					return (OutputStream) method.invoke(object, request);

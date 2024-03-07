@@ -29,7 +29,9 @@ public class SchemaParser {
             Constructor<?> constructor = schemaClass.getConstructor();
             Schema schema = (Schema) constructor.newInstance();
 
+            // final boolean parsedQuery = schema.parse(request, request.getQuery());
             final boolean parsedQuery = schema.parse(request, request.getQuery());
+
             // final boolean parsedParams = schema.parse(request.getParams());
 
             return parsedQuery;

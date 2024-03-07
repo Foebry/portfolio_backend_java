@@ -10,7 +10,7 @@ import controllers.HomeController;
 import entities.Experience;
 import entities.Paginated;
 import entities.Serializable;
-import schemas.experiences.ListSchema;
+import schemas.experiences.List.ListSchema;
 import services.Request;
 import annotations.Route;
 

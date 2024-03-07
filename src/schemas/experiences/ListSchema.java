@@ -6,14 +6,14 @@ import schemas.schemaTypes.StringSchema;
 public class ListSchema extends Schema {
 
 	public StringSchema companyName;
-	public StringSchema experienceId;
+	public StringSchema id;
 	// IntegerSchema page;
 	// IntegerSchema pageSize;
 
 	public ListSchema() {
 		super();
 		this.companyName = this.setCompanyName();
-		this.experienceId = this.setExperienceId();
+		this.id = this.setExperienceId();
 	};
 
 	StringSchema setCompanyName() {
@@ -27,7 +27,7 @@ public class ListSchema extends Schema {
 
 	StringSchema setExperienceId() {
 		final StringSchema stringSchema = new StringSchema();
-		stringSchema.setRequired(true);
+		stringSchema.setRequired(false);
 		stringSchema.setMinLength(2);
 		stringSchema.setMaxLength(100);
 
