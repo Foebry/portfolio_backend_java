@@ -28,7 +28,6 @@ public class Router {
 		return this.resolveAction(request, ExperienceRoute.class, basePath);
 	}
 
-	@Resource(path = catch_all)
 	OutputStream catchAll(Request request, String basePath) throws IOException {
 		Response response = new Response(request.getClient());
 		System.out.println("catchAll route");
@@ -58,8 +57,7 @@ public class Router {
 			}
 		}
 
-		final Response response = new Response(request.getClient());
-		return response.noContent();
+		return this.catchAll(request, resource);
 	}
 
 	private OutputStream resolveAction(Request request, Class<?> resource, String basePath)
