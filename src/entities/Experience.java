@@ -1,6 +1,7 @@
 package entities;
 
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Random;
 
 import annotations.Column;
@@ -45,6 +46,36 @@ public class Experience extends Serializable {
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.company = company;
+		this.position = position;
+		this.stuff = stuff;
+	}
+
+	public Experience(HashMap<String, ?> data) {
+		super();
+		String id = (String) data.get("id");
+		Calendar startDate = (Calendar) data.get("startDate");
+		Calendar endDate = (Calendar) data.get("endDate");
+		String position = (String) data.get("position");
+		String stuff = (String) data.get("stuff");
+
+		if (id != null)
+			this.id = id;
+		if (startDate != null)
+			this.startDate = startDate;
+		if (endDate != null)
+			this.endDate = endDate;
+		if (position != null)
+			this.position = position;
+		if (stuff != null)
+			this.stuff = stuff;
+
+	}
+
+	public Experience(String id, Calendar startDate, Calendar endDate, String position, String stuff) {
+		super();
+		this.id = id;
+		this.startDate = startDate;
+		this.endDate = endDate;
 		this.position = position;
 		this.stuff = stuff;
 	}

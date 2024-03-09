@@ -11,6 +11,7 @@ import entities.Company;
 import entities.Experience;
 import entities.Paginated;
 import entities.Serializable;
+import helperClasses.DateHelperClass;
 import services.Database;
 
 public class ExperienceController extends AbstractController<Experience> {
@@ -19,11 +20,12 @@ public class ExperienceController extends AbstractController<Experience> {
 	Database db;
 
 	public Experience create() {
-		return new Experience(null, null, null, null, null);
+		String id = "";
+		return new Experience(id, null, null, null, null, null);
 	}
 
 	public Experience getById(String id) {
-		return new Experience(null, null, null, id, id);
+		return new Experience(id, null, null, null, id, id);
 	}
 
 	public void delete(String id) {
@@ -31,7 +33,7 @@ public class ExperienceController extends AbstractController<Experience> {
 	}
 
 	public Experience update(String id) {
-		return new Experience(null, null, null, id, id);
+		return new Experience(id, null, null, null, id, id);
 	}
 
 	public Paginated<Experience> getManyAndCount(HashMap<String, Object> query) throws SQLException {
@@ -46,33 +48,19 @@ public class ExperienceController extends AbstractController<Experience> {
 		String sql = "Select * from experiences limit " + pageSize + " offset " + offset;
 
 		ResultSet result = this.db.execute(sql);
+		DateHelperClass dhc = new DateHelperClass();
 
 		while (result.next()) {
-			Integer experienceId = result.getInt(1);
-			String startDate = result.getString(2);
-			String endDate = result.getString(3);
+			String experienceId = String.valueOf(result.getInt(1));
+			Calendar startDate = dhc.convertStringToCalendar(result.getString(2), "date");
+			Calendar endDate = dhc.convertStringToCalendar(result.getString(3), "date");
 
-			String[] splitted_startDate = startDate.split("-");
-			String[] splitted_endDate = endDate.split("-");
+			HashMap<String, Object> data = new HashMap<>();
+			data.put("id", experienceId);
+			data.put("startDate", startDate);
+			data.put("endDate", endDate);
 
-			Integer startYear = Integer.parseInt(splitted_startDate[0]);
-			Integer startMonth = Integer.parseInt(splitted_startDate[1]);
-			Integer startDay = Integer.parseInt(splitted_startDate[2].split(" ")[0]);
-
-			Integer endYear = Integer.parseInt(splitted_endDate[0]);
-			Integer endMonth = Integer.parseInt(splitted_endDate[1]);
-			Integer endDay = Integer.parseInt(splitted_endDate[2].split(" ")[0]);
-
-			Calendar expStartDate = Calendar.getInstance();
-			Calendar expEndDate = Calendar.getInstance();
-
-			expStartDate.set(startYear, startMonth, startDay);
-			expEndDate.set(endYear, endMonth, endDay);
-
-			Company company = new Company("Yucopia", "Walemstraat 72b 2570 Duffer");
-
-			Experience experience = new Experience(String.valueOf(experienceId), expStartDate, expEndDate, company, "",
-					"");
+			Experience experience = new Experience(data);
 			experiences.add(experience);
 		}
 

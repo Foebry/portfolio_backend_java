@@ -64,6 +64,8 @@ public class Serializable {
 		StringBuilder sb = new StringBuilder();
 
 		try {
+			if (field.get(this) == null)
+				return sb.append("null").toString();
 			switch (column_type) {
 				case "Date":
 					Calendar date_field = (Calendar) field.get(this);
@@ -104,6 +106,8 @@ public class Serializable {
 
 	private String serializeRelation(Field field) {
 		try {
+			if (field.get(this) == null)
+				return "null";
 			Company value = (Company) field.get(this);
 			return value.serialize(this.getClass());
 		} catch (IllegalArgumentException | IllegalAccessException e) {
