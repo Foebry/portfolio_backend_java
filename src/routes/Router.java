@@ -30,7 +30,6 @@ public class Router {
 
 	OutputStream catchAll(Request request, String basePath) throws IOException {
 		Response response = new Response(request.getClient());
-		System.out.println("catchAll route");
 		return response.resourceNotFound();
 	}
 

@@ -14,6 +14,7 @@ public class StringSchema extends TypeSchema {
         super();
         this.format = null;
         this.defaultValue = null;
+        this.maxLength = null;
     }
 
     public void setMinLength(Integer minLength) {
@@ -44,10 +45,8 @@ public class StringSchema extends TypeSchema {
         }
 
         if (value == null) {
-            if (this.defaultValue != null)
-                queryOrParams.put(key, (Object) this.defaultValue);
-            else
-                return true;
+            queryOrParams.put(key, (Object) this.defaultValue);
+            return true;
         }
 
         final boolean validatedLength = this.validateLength(key, value, request);
@@ -63,8 +62,8 @@ public class StringSchema extends TypeSchema {
     }
 
     boolean validateLength(String key, String value, Request request) {
-        final boolean isTooShort = value.length() < this.minLength;
-        final boolean isTooLong = value.length() > this.maxLength;
+        final boolean isTooShort = this.minLength != null && value.length() < this.minLength;
+        final boolean isTooLong = this.maxLength != null && value.length() > this.maxLength;
 
         if (isTooShort)
             request.getResponse().getSchemaError().put(key,

@@ -21,17 +21,15 @@ public class QuerySchema extends Schema {
 
     StringSchema setCompanyName() {
         final StringSchema stringSchema = new StringSchema();
-        stringSchema.setRequired(true);
         stringSchema.setMinLength(1);
-        stringSchema.setMaxLength(100);
+        stringSchema.setRequired(true);
 
         return stringSchema;
     }
 
     StringSchema setExperienceId() {
         final StringSchema stringSchema = new StringSchema();
-        stringSchema.setMinLength(2);
-        stringSchema.setMaxLength(100);
+        stringSchema.setMinLength(1);
 
         return stringSchema;
     }
@@ -39,13 +37,14 @@ public class QuerySchema extends Schema {
     IntegerSchema setPage() {
         final IntegerSchema integerSchema = new IntegerSchema();
         integerSchema.setDefault(1);
+        integerSchema.setMinimum(1);
 
         return integerSchema;
     }
 
     IntegerSchema setPageSize() {
         final IntegerSchema integerSchema = new IntegerSchema();
-        integerSchema.setDefault(5);
+        integerSchema.setDefault(15);
         integerSchema.setMinimum(1);
 
         return integerSchema;

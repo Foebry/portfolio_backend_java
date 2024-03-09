@@ -7,15 +7,15 @@ import annotations.Serialize;
 
 public class Paginated<T extends Serializable> extends Serializable {
 
-    @Column(type = "varchar")
+    @Column(type = "number")
     @Serialize()
     protected int page;
 
-    @Column(type = "varchar")
+    @Column(type = "number")
     @Serialize()
     protected int pageSize;
 
-    @Column(type = "varchar")
+    @Column(type = "number")
     @Serialize()
     protected int total;
 

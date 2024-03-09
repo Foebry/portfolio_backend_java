@@ -109,7 +109,7 @@ public class Response extends Serializable {
         this.code = 204;
         this.status = "noContent";
         this.responseData = "";
-        return this.respond(true);
+        return this.respond(false);
     }
 
     public OutputStream internalServerError() throws IOException {

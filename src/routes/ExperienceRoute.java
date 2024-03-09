@@ -2,10 +2,11 @@ package routes;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.HashMap;
 
-import controllers.HomeController;
+import controllers.ExperienceController;
 
 import entities.Experience;
 import entities.Paginated;
@@ -16,7 +17,7 @@ import annotations.Route;
 
 public class ExperienceRoute extends BaseRoute {
 
-	private HomeController controller;
+	private ExperienceController controller;
 	private String routeName = "experiences";
 
 	public ExperienceRoute(Request request) {
@@ -31,12 +32,23 @@ public class ExperienceRoute extends BaseRoute {
 	@Route(endpoint = "/", method = "GET", name = "listExperiences", schema = ListSchema.class)
 	public OutputStream get(Request request) throws IOException, IllegalArgumentException, IllegalAccessException {
 
-		HashMap<String, ?> query = request.getQuery();
-		Paginated<Serializable> experiences = this.controller.getExperiences(query);
+		try {
+			Paginated<Experience> experiences = this.controller.getManyAndCount(request.getQuery());
 
-		String result = Paginated.serialize(experiences);
+			String result = Paginated.serialize(experiences);
 
-		return this.getResponse().ok(result);
+			return this.getResponse().ok(result);
+		} catch (SQLException e) {
+			System.out.println(e);
+			return this.getResponse().internalServerError();
+		}
+
+		// HashMap<String, ?> query = request.getQuery();
+		// Paginated<Serializable> experiences = this.controller.getExperiences(query);
+
+		// String result = Paginated.serialize(experiences);
+
+		// return this.getResponse().ok(result);
 
 	}
 

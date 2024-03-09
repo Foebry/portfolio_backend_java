@@ -3,21 +3,21 @@ package services;
 import java.util.Calendar;
 import java.util.Stack;
 
-import controllers.HomeController;
+import controllers.ExperienceController;
 import entities.Company;
 import entities.Experience;
 
 public class Factory {
 
-    HomeController homeController;
+    ExperienceController homeController;
 
-    public Factory() {
+    public Factory(Database db) {
         Stack<Experience> experiences = createExperiences(5);
 
-        this.homeController = new HomeController(experiences);
+        this.homeController = new ExperienceController(experiences, db);
     }
 
-    public HomeController getHomeController() {
+    public ExperienceController getHomeController() {
         return this.homeController;
     }
 

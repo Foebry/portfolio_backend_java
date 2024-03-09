@@ -12,14 +12,14 @@ public class Schema {
 
     }
 
-    public boolean parse(Request request, HashMap<String, Object> queryOrParams) {
+    public boolean parse(Request request, HashMap<String, Object> hashmap) {
         Field[] fields = this.getClass().getDeclaredFields();
 
         for (Field field : fields) {
             try {
                 TypeSchema value = (TypeSchema) field.get(this);
                 String key = field.getName();
-                Boolean parsedField = value.parse(request, queryOrParams, key);
+                Boolean parsedField = value.parse(request, hashmap, key);
                 if (!parsedField)
                     return false;
             } catch (IllegalArgumentException | IllegalAccessException e) {
